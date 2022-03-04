@@ -84,7 +84,11 @@ func resourceGroupCreate(ctx context.Context, d *schema.ResourceData, m interfac
 	var diags diag.Diagnostics
 
 	name := d.Get("name").(string)
-	minimumSiteRole := d.Get("minimum_site_role").(string)
+	var minimumSiteRole *string
+	if val, exists := d.GetOk("minimum_site_role"); exists {
+		temp := val.(string)
+		minimumSiteRole = &temp
+	}
 
 	g, err := c.CreateGroup(name, minimumSiteRole)
 	if err != nil {

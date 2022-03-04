@@ -1,7 +1,7 @@
 NAME=tableau
 VERSION=$(shell cat VERSION)
 BINARY=terraform-provider-$(NAME)_v$(VERSION)
-
+ARCH=darwin_amd64
 default: install
 
 setup:
@@ -12,8 +12,8 @@ build:
 	go build -ldflags "-w -s" -o $(BINARY) .
 
 install: build
-	mkdir -p $(HOME)/.terraform.d/plugins
-	mv ./$(BINARY) $(HOME)/.terraform.d/plugins/$(BINARY)
+	mkdir -p $(HOME)/.terraform.d/plugins/registry.terraform.io/gthesheep/tableau/$(VERSION)/$(ARCH)
+	mv ./$(BINARY) $(HOME)/.terraform.d/plugins/registry.terraform.io/gthesheep/tableau/$(VERSION)/$(ARCH)/terraform-provider-$(NAME)
 
 docs:
 	go get github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs

@@ -8,6 +8,10 @@ import (
 	"strings"
 )
 
+type UserRequest struct {
+	User User `json:"user"`
+}
+
 type User struct {
 	ID          *string `json:"id"`
 	Email       *string `json:"email"`
@@ -44,13 +48,13 @@ func (c *Client) GetUser(userID string) (*User, error) {
 
 func (c *Client) CreateUser(email, name, fullName, siteRole, authSetting string) (*User, error) {
 
-	newUser := User{
+	newUser := UserRequest{User: User{
 		Email:       &email,
 		Name:        &name,
 		FullName:    &fullName,
 		SiteRole:    &siteRole,
 		AuthSetting: &authSetting,
-	}
+	}}
 
 	newUserJson, err := json.Marshal(newUser)
 	if err != nil {

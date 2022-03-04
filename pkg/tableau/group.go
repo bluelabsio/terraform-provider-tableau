@@ -13,6 +13,10 @@ type GroupImport struct {
 	GrantLicenseMode *string `json:"grantLicenseMode"`
 }
 
+type NewGroupRequest struct {
+	Group NewGroup `json:"group"`
+}
+
 type NewGroup struct {
 	Name            string  `json:"name"`
 	MinimumSiteRole *string `json:"minimumSiteRole"`
@@ -91,12 +95,12 @@ func (c *Client) GetGroup(groupID string) (*Group, error) {
 	return nil, fmt.Errorf("Did not find group ID %s", groupID)
 }
 
-func (c *Client) CreateGroup(name, minimumSiteRole string) (*Group, error) {
+func (c *Client) CreateGroup(name string, minimumSiteRole *string) (*Group, error) {
 
-	newGroup := NewGroup{
+	newGroup := NewGroupRequest{Group: NewGroup{
 		Name:            name,
-		MinimumSiteRole: &minimumSiteRole,
-	}
+		MinimumSiteRole: minimumSiteRole,
+	}}
 
 	newGroupJson, err := json.Marshal(newGroup)
 	if err != nil {

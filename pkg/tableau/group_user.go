@@ -67,9 +67,9 @@ func (c *Client) GetGroupUser(groupID, userID string) (*User, error) {
 
 func (c *Client) CreateGroupUser(groupID, userID string) (*User, error) {
 
-	newGroupUser := User{
+	newGroupUser := UserRequest{User: User{
 		ID: &userID,
-	}
+	}}
 
 	newGroupUserJson, err := json.Marshal(newGroupUser)
 	if err != nil {
