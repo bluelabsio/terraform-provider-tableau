@@ -49,9 +49,7 @@ func (c *Client) GetUser(userID string) (*User, error) {
 func (c *Client) CreateUser(email, name, fullName, siteRole, authSetting string) (*User, error) {
 
 	newUser := UserRequest{User: User{
-		Email:       &email,
 		Name:        &name,
-		FullName:    &fullName,
 		SiteRole:    &siteRole,
 		AuthSetting: &authSetting,
 	}}
@@ -81,13 +79,14 @@ func (c *Client) CreateUser(email, name, fullName, siteRole, authSetting string)
 	return &userResponse.User, nil
 }
 
-func (c *Client) UpdateUser(userID, name, siteRole, authSetting string) (*User, error) {
+func (c *Client) UpdateUser(userID, fullName, email, siteRole, authSetting string) (*User, error) {
 
-	newUser := User{
-		Name:        &name,
+	newUser := UserRequest{User: User{
+		FullName:    &fullName,
+		Email:       &email,
 		SiteRole:    &siteRole,
 		AuthSetting: &authSetting,
-	}
+	}}
 
 	newUserJson, err := json.Marshal(newUser)
 	if err != nil {

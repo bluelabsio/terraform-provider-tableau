@@ -37,12 +37,12 @@ var userSchema = map[string]*schema.Schema{
 	"name": &schema.Schema{
 		Type:        schema.TypeString,
 		Required:    true,
-		Description: "Display name for user",
+		Description: "User name",
 	},
 	"full_name": &schema.Schema{
 		Type:        schema.TypeString,
 		Required:    true,
-		Description: "Full name for user",
+		Description: "Display name for user",
 	},
 	"site_role": &schema.Schema{
 		Type:         schema.TypeString,
@@ -120,6 +120,11 @@ func resourceUserCreate(ctx context.Context, d *schema.ResourceData, m interface
 
 	d.SetId(*u.ID)
 
+	_, err = c.UpdateUser(*u.ID, fullName, email, siteRole, authSetting)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
 	resourceUserRead(ctx, d, m)
 
 	return diags
@@ -129,12 +134,13 @@ func resourceUserUpdate(ctx context.Context, d *schema.ResourceData, m interface
 	c := m.(*tableau.Client)
 	userId := d.Id()
 
-	if d.HasChange("name") || d.HasChange("site_role") || d.HasChange("auth_setting") {
-		name := d.Get("name").(string)
+	if d.HasChange("full_name") || d.HasChange("email") || d.HasChange("site_role") || d.HasChange("auth_setting") {
+		fullName := d.Get("full_name").(string)
+		email := d.Get("email").(string)
 		siteRole := d.Get("site_role").(string)
 		authSetting := d.Get("auth_setting").(string)
 
-		_, err := c.UpdateUser(userId, name, siteRole, authSetting)
+		_, err := c.UpdateUser(userId, fullName, email, siteRole, authSetting)
 		if err != nil {
 			return diag.FromErr(err)
 		}
