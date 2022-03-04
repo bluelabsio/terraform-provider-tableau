@@ -1,7 +1,7 @@
 NAME=tableau
 VERSION=$(shell cat VERSION)
 BINARY=terraform-provider-$(NAME)_v$(VERSION)
-ARCH=darwin_amd64
+ARCH=$(shell go env GOOS)_$(shell go env GOARCH)
 default: install
 
 setup:
