@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+	"strings"
 
 	"github.com/gthesheep/terraform-provider-tableau/pkg/tableau"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -81,6 +82,11 @@ func resourceUserRead(ctx context.Context, d *schema.ResourceData, m interface{}
 
 	user, err := c.GetUser(userID)
 	if err != nil {
+		// TODO: this is terrible
+		if strings.Contains(err.Error(), "404") {
+			d.SetId("")
+			return nil
+		}
 		return diag.FromErr(err)
 	}
 	if err := d.Set("email", user.Email); err != nil {
