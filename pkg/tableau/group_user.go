@@ -97,7 +97,7 @@ func (c *Client) CreateGroupUser(groupID, userID string) (*User, error) {
 
 func (c *Client) DeleteGroupUser(groupID, userID string) (*User, error) {
 
-	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/groups/%s/users", c.ApiUrl, groupID), nil)
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/groups/%s/users/%s", c.ApiUrl, groupID, userID), nil)
 	if err != nil {
 		return nil, err
 	}
