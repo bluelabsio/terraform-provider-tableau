@@ -128,9 +128,11 @@ func (c *Client) CreateGroup(name string, minimumSiteRole *string) (*Group, erro
 
 func (c *Client) UpdateGroup(groupID, name, minimumSiteRole string) (*Group, error) {
 
-	newGroup := NewGroup{
-		Name:            name,
-		MinimumSiteRole: &minimumSiteRole,
+	newGroup := NewGroupRequest{
+		NewGroup{
+			Name:            name,
+			MinimumSiteRole: &minimumSiteRole,
+		},
 	}
 
 	newGroupJson, err := json.Marshal(newGroup)
